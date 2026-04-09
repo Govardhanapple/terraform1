@@ -1,0 +1,18 @@
+#Resource_Group 
+resource "azurerm_resource_group" "apple" {
+  name     = "import-rg"
+  location = "West Europe"
+}
+resource "azurerm_storage_account" "svc-1" {
+  name                     = "svc234567"
+  resource_group_name      = azurerm_resource_group.apple.name
+  location                 = azurerm_resource_group.apple.location
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+}
+
+terraform import azurerm_resource_group.import_rg /subscriptions/<SUBSCRIPTION_ID>/resourceGroups/<RG_NAME>
+
+terraform import azurerm_resource_group.apple /subscriptions/60e7b2a4-780a-40f9-9bad-b4a1b8416270/resourceGroups/import-rg
+
+Note : Before you run the terraform import command, you should update your main.tf resource block to match the exact values of the resource group that already exists in the Azure portal.

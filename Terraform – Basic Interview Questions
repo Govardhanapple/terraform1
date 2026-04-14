@@ -1,0 +1,113 @@
+1. What is Terraform?
+Terraform is an Infrastructure as Code (IaC) tool by HashiCorp used to provision, manage, and version infrastructure across cloud providers
+like AWS, Azure, GCP using declarative configuration files
+
+2. CMD TO run 
+terraform init # Initialize provider plugins
+terraform plan # Preview changes
+terraform apply # Apply changes
+terraform destroy # Remove resources
+
+3 what is use Statefile in terraform.
+The Terraform state file (terraform.tfstate) is a critical component that stores the current state of your managed infrastructure. 
+It acts as a mapping between your Terraform configuration and the actual resources in the cloud or on-premises systems. 
+Without it, Terraform cannot determine what changes need to be applied.
+
+4.What happens if Terraform state is deleted?
+✅ Terraform:
+Loses track of resources
+Cannot manage existing infra
+Might attempt recreation
+✅ Recovery:
+Restore from backup
+Import resources
+
+5. Requirements to Create Multiple Azure VMs
+    Basic Requirements
+You need:
+* Number of VMs (e.g., 3, 5, 10)
+* VM size (Standard_B2s, D2s_v3, etc.)
+* OS type (Linux / Windows)
+* Admin username & authentication
+* Networking (VNET, Subnet)
+* Security (NSG rules)
+* Environment (dev / prod)
+
+6.What is count & count.index in Terraform?
+  * Count is decided to desired number you want to create reosource 
+  * count.index is a built‑in number that Terraform gives to each instance---  name = "linux-vm-${count.index}"
+
+7. I need to create 3 VMs. Which fields/resources do I need to write 3 times in Terraform code, and which ones I write only once?
+    * Virtual Machine
+    * Network Interface (NIC)
+    * OS Disk
+    * Piblic Ip 
+
+8 .  What is a Variable (in Terraform)?
+A variable in Terraform is a placeholder used to store a value so you don’t have to hard‑code information in your infrastructure code.
+👉 Variables make Terraform code reusable, flexible, and easy to change.
+
+9. Terraform Variable Types – Table
+    string--------Stores text values-------------- ----"East US"---------------Location, resource names
+    number-----------Stores numeric values-----------------3 ------------------VM count, port numbers
+    list(string)------Ordered list of values---------["10.0.0.0/16"]-------CIDR blocks, subnets
+    map(string) ------Key‑value pairs---------------{ dev = "B2s" }---------VM sizes per environment
+    set(string)----------Unique unordered values----------["10.0.0.1"]---------NSG rules, allowed IPs
+    Example : 
+      #string Variable 
+                variable "location" {
+                  type    = string
+                  default = "East US"
+                }
+    #map(string) Variable 
+                    variable "vms" {
+                      type = map(string)
+                      default = {
+                        vm1 = "Standard_B2s"
+                        vm2 = "Standard_D2s_v3"
+                      }
+                    }
+      # number Variable
+                    variable "vm_count" {
+                    type    = number
+                    default = 3
+                  }
+      # bool Variable
+                      variable "enable_public_ip" {
+                    type    = bool
+                    default = true
+                  }
+  #  list(string) Variable
+                      variable "address_spaces" {
+                        type    = list(string)
+                        default = ["10.0.0.0/16"]
+                      }
+  
+10 . What is diffrence between terraform import VS data block 
+    terraform import: 
+          terraform import is a CLI command used to add an already‑existing resource into Terraform state so Terraform can manage it.
+          ✅ After import:
+                            Resource is in terraform.tfstate
+                            Terraform can update / destroy it
+          ✅ When do you use terraform import?
+                              Resource was created manually (Azure Portal, CLI), You now want Terraform to manage it.
+----------
+terraform import azurerm_linux_virtual_machine.vm \
+/subscriptions/<sub-id>/resourceGroups/rg-demo/providers/Microsoft.Compute/virtualMachines/existing-v
+---------
+  What is a data block?
+A data block is used to read information about existing resources.
+          ✅ Terraform:
+                              Reads values
+                              Does NOT manage the resource
+                              Cannot delete or modify it
+11. What is a Module in Terraform?
+        A Terraform module is a reusable, configurable block of infrastructure code that helps organize and standardize resource creation.
+
+12 . 
+
+  
+
+     
+                          
+
